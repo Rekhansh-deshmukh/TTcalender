@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -37,74 +36,40 @@ body {
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --indigo-50:#E8EAF6;
+    --indigo-100:#C5CAE9;
+    --indigo-200:#9FA8DA;
+    --indigo-300:#7986CB;
+    --indigo-400:#5C6BC0;
+    --indigo-500:#3F51B5;
+    --indigo-600:#3949AB;
+    --indigo-700:#303F9F;
+    --indigo-800:#283593;
+    --indigo-900:#1A237E;
+
+    --blue-50:#E3F2FD;
+    --blue-100:#BBDEFB;
+    --blue-200:#90CAF9;
+    --blue-300:#64B5F6;
+    --blue-400:#42A5F5;
+    --blue-500:#2196F3;
+    --blue-600:#1E88E5;
+    --blue-700:#1976D2;
+    --blue-800:#1565C0;
+    --blue-900:#0D47A1;
+
+    --teal-50:#E0F2F1;
+    --teal-100:#B2DFDB;
+    --teal-200:#80CBC4;
+    --teal-300:#4DB6AC;
+    --teal-400:#26A69A;
+    --teal-500:#009688;
+    --teal-600:#00897B;
+    --teal-700:#00796B;
+    --teal-800:#00695C;
+    --teal-900:#004D40;
   }
-  .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 231 44% 48%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.9%;
-    --accent: 169 100% 27%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  --indigo-50:#E8EAF6;
-  --indigo-100:#C5CAE9;
-  --indigo-200:#9FA8DA;
-  --indigo-300:#7986CB;
-  --indigo-400:#5C6BC0;
-  --indigo-500:#3F51B5;
-  --indigo-600:#3949AB;
-  --indigo-700:#303F9F;
-  --indigo-800:#283593;
-  --indigo-900:#1A237E;
-
-  --blue-50:#E3F2FD;
-  --blue-100:#BBDEFB;
-  --blue-200:#90CAF9;
-  --blue-300:#64B5F6;
-  --blue-400:#42A5F5;
-  --blue-500:#2196F3;
-  --blue-600:#1E88E5;
-  --blue-700:#1976D2;
-  --blue-800:#1565C0;
-  --blue-900:#0D47A1;
-
-  --teal-50:#E0F2F1;
-  --teal-100:#B2DFDB;
-  --teal-200:#80CBC4;
-  --teal-300:#4DB6AC;
-  --teal-400:#26A69A;
-  --teal-500:#009688;
-  --teal-600:#00897B;
-  --teal-700:#00796B;
-  --teal-800:#00695C;
-  --teal-900:#004D40;
 }
 
 @layer base {
@@ -115,3 +80,4 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
