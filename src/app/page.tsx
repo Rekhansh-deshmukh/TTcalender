@@ -1,18 +1,27 @@
 'use client';
 
-import { Calendar } from "@/components/ui/calendar";
+import * as z from "zod"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { format } from 'date-fns';
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 
 interface ClassSchedule {
-  className: string;
-  time: string;
-  day: string;
-  location: string;
+    className: string;
+    time: string;
+    day: string;
+    location: string;
 }
 
 const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -62,20 +71,36 @@ END:VEVENT
   return icsContent;
 }
 
+const formSchema = z.object({
+  className: z.string().min(2, {
+    message: "Class name must be at least 2 characters.",
+  }),
+  time: z.string().min(2, {
+    message: "Time must be at least 2 characters.",
+  }),
+  day: z.string({
+    required_error: "Please select a day.",
+  }),
+  location: z.string().min(2, {
+    message: "Location must be at least 2 characters.",
+  }),
+})
+
 export default function Home() {
   const [schedule, setSchedule] = useState<ClassSchedule[]>([]);
-  const [className, setClassName] = useState('');
-  const [time, setTime] = useState('');
-  const [day, setDay] = useState('');
-  const [location, setLocation] = useState('');
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      className: "",
+      time: "",
+      day: "",
+      location: "",
+    },
+  })
 
-  const addClass = () => {
-    if (className && time && day && location) {
-      setSchedule([...schedule, { className, time, day, location }]);
-      setClassName('');
-      setTime('');
-      setDay('');
-      setLocation('');
+  const addClass = (values: z.infer<typeof formSchema>) => {
+    if (values.className && values.time && values.day && values.location) {
+      setSchedule([...schedule, values]);
     }
   };
 
@@ -96,40 +121,54 @@ export default function Home() {
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Class Schedule Input</CardTitle>
-          <CardDescription>Enter your class details below.</CardDescription>
+          
         </CardHeader>
         <CardContent className="grid gap-4">
-          <div className="grid gap-2">
-            <Label htmlFor="className">Class Name</Label>
-            <Input id="className" value={className} onChange={(e) => setClassName(e.target.value)} />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="time">Time (e.g., 9:00-10:00)</Label>
-            <Input id="time" value={time} onChange={(e) => setTime(e.target.value)} />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="day">Day</Label>
-            <select
-              id="day"
-              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-              value={day}
-              onChange={(e) => setDay(e.target.value)}
-            >
-              <option value="">Select Day</option>
-              {daysOfWeek.map((day) => (
-                <option key={day} value={day}>{day}</option>
-              ))}
-            </select>
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="location">Location</Label>
-            <Input id="location" value={location} onChange={(e) => setLocation(e.target.value)} />
-          </div>
-          <Button onClick={addClass}>Add Class</Button>
+          <form onSubmit={(e) => {
+             e.preventDefault()
+            form.handleSubmit(addClass)(e)
+          }}>
+            <CardTitle>Class Schedule Input</CardTitle>
+            <CardDescription>Enter your class details below.</CardDescription>
+            <div className="grid gap-2">
+              <Label htmlFor="className">Class Name</Label>
+              <Input id="className" {...form.register("className")} />
+              {form.formState.errors.className && (
+                <p className="text-red-500">{form.formState.errors.className.message}</p>
+              )}
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="time">Time (e.g., 9:00-10:00)</Label>
+              <Input id="time" {...form.register("time")} />
+              {form.formState.errors.time && (
+                <p className="text-red-500">{form.formState.errors.time.message}</p>
+              )}
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="day">Day</Label>
+              <Select onValueChange={form.setValue.bind(null, 'day')} defaultValue={form.getValues("day")} >
+                <SelectTrigger id="day">
+                  <SelectValue placeholder="Select a day" />
+                </SelectTrigger>
+                <SelectContent>
+                  {daysOfWeek.map((day) => <SelectItem key={day} value={day}>{day}</SelectItem>)}
+                </SelectContent>
+              </Select>
+              {form.formState.errors.day && (
+                <p className="text-red-500">{form.formState.errors.day.message}</p>
+              )}
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="location">Location</Label>
+              <Input id="location" {...form.register("location")} />
+              {form.formState.errors.location && (
+                <p className="text-red-500">{form.formState.errors.location.message}</p>
+              )}
+            </div>
+            <Button type="submit">Add Class</Button>
+          </form>
         </CardContent>
       </Card>
-
       <Card className="w-full max-w-md mt-4">
         <CardHeader>
           <CardTitle>Weekly Timetable</CardTitle>
@@ -162,7 +201,7 @@ export default function Home() {
           )}
         </CardContent>
       </Card>
-      
+
       {schedule.length > 0 && (
         <Button className="mt-4" onClick={downloadICSFile}>Download ICS File</Button>
       )}
